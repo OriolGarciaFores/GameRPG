@@ -11,4 +11,5 @@ public class Global {
     public static PImage spriteSheet;
     public static PImage spritesPlayer;
     public static PImage spriteMonster;
+    public static PImage sword;
 }

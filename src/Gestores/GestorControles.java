@@ -18,6 +18,7 @@ public class GestorControles {
     public boolean shotRight = false;
     public boolean activeShield = false;
     public boolean activeMultiShot = false;
+    public boolean activeAtq = false;
 
     public boolean isRun = false;
 
@@ -60,6 +61,9 @@ public class GestorControles {
             case KeyEvent.VK_E:
                 activeMultiShot = true;
                 break;
+            case KeyEvent.VK_1:
+                activeAtq = true;
+                break;
         }
     }
 
@@ -100,6 +104,9 @@ public class GestorControles {
                 break;
             case KeyEvent.VK_E:
                 activeMultiShot = false;
+                break;
+            case KeyEvent.VK_1:
+                activeAtq = false;
                 break;
         }
     }

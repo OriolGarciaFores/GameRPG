@@ -5,6 +5,8 @@ import Herramientas.Utils;
 import processing.core.PApplet;
 import processing.core.PImage;
 
+import java.awt.event.KeyEvent;
+
 /*
 **************************************************
 *
@@ -82,12 +84,15 @@ public class Main extends PApplet {
     private void loadScreen() {
         surface.setTitle(TITLE_VERSION);
         surface.setResizable(false);
+        //TODO TEMPORAL - PANTALLA SECUNDARIA
+        //surface.setLocation(displayWidth, 0);
     }
 
     private void loadSprites() {
         Global.spriteSheet = loadImage("Resources/Sprites/Overworld.png");
         Global.spritesPlayer = loadImage("Resources/Sprites/character.png");
-        Global.spriteMonster = loadImage("Resources/Sprites/testpj.png");
+        Global.spriteMonster = loadImage("Resources/Sprites/fantasmito.png");
+        Global.sword = loadImage("Resources/Sprites/Espada.png");
     }
 
     private void updates() {
@@ -126,5 +131,17 @@ public class Main extends PApplet {
 
     public void keyPressed() {
         Constante.KEYBOARD.keyDown(keyCode);
+    }
+
+    public void mousePressed(){
+        if(mouseButton == LEFT){
+            Constante.KEYBOARD.keyDown(KeyEvent.VK_1);
+        }
+    }
+
+    public void mouseReleased(){
+        if(mouseButton == LEFT){
+            Constante.KEYBOARD.keyUp(KeyEvent.VK_1);
+        }
     }
 }

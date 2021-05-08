@@ -1,5 +1,6 @@
 package Beans.Entes;
 
+import Beans.comunes.Espada;
 import Herramientas.Constante;
 import Herramientas.Global;
 import Herramientas.Utils;
@@ -40,7 +41,9 @@ public class Player implements Serializable {
     private boolean colisionAbajo = false;
     private boolean colisionArriba = false;
     private int[][] obstaculosColisionables;
-    private float radioAtaque = 16f * Constante.RESCALADO;
+
+    //TODO WEAPON - Equipamiento ? - multiples armas
+    private Espada espada;
 
     public Player(final int x, final int y) {
         posicion = new PVector(x, y);
@@ -50,8 +53,10 @@ public class Player implements Serializable {
         this.radio = 16f*Constante.RESCALADO;
         loadSprites();
         spriteActual = sprites.get(0);
+        espada = new Espada();
     }
 
+    //TODO CODIGO REPETIBLE EN MULTIPLES ENTIDADES
     private void loadSprites(){
         sprites = new ArrayList<>();
         int x = 0;
@@ -73,6 +78,7 @@ public class Player implements Serializable {
 
     public void update() {
         direction();
+        updateArma();
         move();
     }
 
@@ -82,6 +88,7 @@ public class Player implements Serializable {
         graphics.pushMatrix();
         graphics.translate(anchor.x, anchor.y);
         body(graphics);
+        espada.paint(graphics);//TODO REVISAR ORDEN PAINT (CARA ARRIBA ABAJO)
         graphics.popMatrix();
         debug(graphics, anchor);
     }
@@ -107,6 +114,7 @@ public class Player implements Serializable {
             Utils.debugValue("LADOS COLISION: ", ladoCol, 20, 190, graphics);
             Utils.debugValue("POSICION MATRIZ X: ", (this.posicion.x / Constante.RESCALADO_SPRITE_WIDTH), 20, 210, graphics);
             Utils.debugValue("POSICION MATRIZ Y: ", (this.posicion.y / Constante.RESCALADO_SPRITE_HEIGHT), 20, 230, graphics);
+            espada.debug(graphics);
         }
     }
 
@@ -136,6 +144,12 @@ public class Player implements Serializable {
         this.acc = direction;
     }
 
+    private void updateArma(){
+            espada.setAnchor(anchor);
+            espada.setDireccionMovimiento(direccionMovimiento);
+            espada.update();
+    }
+
     private void move() {
         PVector posicionAnterior;
 
@@ -147,19 +161,10 @@ public class Player implements Serializable {
         posicionAnterior = new PVector(posicion.x, posicion.y);
         speed.add(acc);
         posicion.add(speed);
-
-        /*if(validarCollisionObstaculos()){
-            for(Rectangle obstaculoCollisionado : obstaculosCollisionados){
-                posicion = Utils.calcularAccColisionado(posicion.x, posicion.y, obstaculoCollisionado.x, obstaculoCollisionado.y, obstaculoCollisionado.width, obstaculoCollisionado.height, acc, posicionAnterior, posicion);
-            }
-
-        }*/
-
         colisionesMapa(posicionAnterior);
-        //collision();
     }
 
-    //TODO SI SPAMEAS LA DIRECCION NO REALIZA ANIMACION
+    //TODO POSIBLE METODO GENERICO MULTIPLES ENTIDADES ?
     private void cambiarAnimacion(){
         fpsAnimacionActual++;
         if(fpsAnimacionActual >= MAX_FPS_ANIMACION){

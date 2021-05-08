@@ -85,8 +85,12 @@ public class Utils {
     }
 
     public static void debugAreaCirculo(float rad, PGraphics graphics, PVector posicion) {
+        debugAreaCirculo(rad, graphics, posicion, Constante.BLANCO.getRGB());
+    }
+
+    public static void debugAreaCirculo(float rad, PGraphics graphics, PVector posicion, final int rgb) {
         graphics.pushMatrix();
-        graphics.stroke(Constante.BLANCO.getRGB());
+        graphics.stroke(rgb);
         graphics.strokeWeight(GROSOR);
         graphics.noFill();
         graphics.translate(posicion.x, posicion.y);
