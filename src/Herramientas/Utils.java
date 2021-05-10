@@ -195,4 +195,33 @@ public class Utils {
             debugValue("Memory used (MB): " + memoryUsed + " Total (MB):", totalMemory, posX, posY, graphics);
         }
     }
+
+    public static ArrayList<PImage> loadSprites(int filas, int columnas, int spriteWidth, int spriteHeight, PImage hojaSprites){
+        ArrayList<PImage> sprites = new ArrayList<>();
+        int x = 0;
+        int y = 0;
+
+        for (int fila = 0; fila < filas; fila++) {
+            for (int col = 0; col < columnas; col++) {
+                PImage image = hojaSprites.get(x, y, spriteWidth, spriteHeight);
+                sprites.add(image);
+                x += spriteWidth;
+            }
+            y += spriteHeight;
+            x = 0;
+        }
+
+        return sprites;
+    }
+
+    public static ArrayList<PImage> resizeSprites(int spriteWidthResize, int spriteHeightResize, ArrayList<PImage> sprites) {
+        ArrayList<PImage> spriteRedimensinado = new ArrayList<>();
+
+        for (PImage image : sprites) {
+            image.resize(spriteWidthResize, spriteHeightResize);
+            spriteRedimensinado.add(image);
+        }
+
+        return spriteRedimensinado;
+    }
 }

@@ -27,29 +27,24 @@ public class Espada {
 
     public Espada() {
         loadSprites();
+        resizeSprites();
         spriteActual = sprites.get(0);
     }
 
-    //TODO CODIGO REPETIDO
     private void loadSprites(){
-        sprites = new ArrayList<>();
-        int x = 0;
-        int y = 0;
         int filas = 1;
         int columnas = 4;
+        final int WIDTH_SPRITE = Constante.SPRITE_WIDTH * 4;
+        final int HEIGHT_SPRITE = Constante.SPRITE_WIDTH * 4;
+
+        sprites = Utils.loadSprites(filas, columnas, WIDTH_SPRITE, HEIGHT_SPRITE, Global.sword);
+    }
+
+    private void resizeSprites(){
         final int WIDTH_SPRITE = 24 * Constante.RESCALADO;
         final int HEIGHT_SPRITE = 24 * Constante.RESCALADO;
 
-        for (int fila = 0; fila < filas; fila++) {
-            for (int col = 0; col < columnas; col++) {
-                PImage image = Global.sword.get(x, y, Constante.SPRITE_WIDTH*4, Constante.SPRITE_HEIGHT*4);
-                image.resize(WIDTH_SPRITE, HEIGHT_SPRITE);
-                sprites.add(image);
-                x += Constante.SPRITE_WIDTH*4;
-            }
-            y += Constante.SPRITE_HEIGHT*4;
-            x = 0;
-        }
+        sprites = Utils.resizeSprites(WIDTH_SPRITE, HEIGHT_SPRITE, sprites);
     }
 
     public void update() {

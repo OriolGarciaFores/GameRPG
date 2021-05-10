@@ -52,28 +52,20 @@ public class Player implements Serializable {
         health = MAX_HEALTH;
         this.radio = 16f*Constante.RESCALADO;
         loadSprites();
+        resizeSprites();
         spriteActual = sprites.get(0);
         espada = new Espada();
     }
 
-    //TODO CODIGO REPETIBLE EN MULTIPLES ENTIDADES
     private void loadSprites(){
-        sprites = new ArrayList<>();
-        int x = 0;
-        int y = 0;
         int filas = 4;
         int columnas = 4;
 
-        for (int fila = 0; fila < filas; fila++) {
-            for (int col = 0; col < columnas; col++) {
-                PImage image = Global.spritesPlayer.get(x, y, Constante.SPRITE_WIDTH, Constante.SPRITE_HEIGHT*2);
-                image.resize(Constante.RESCALADO_SPRITE_WIDTH, Constante.RESCALADO_SPRITE_HEIGHT*2);
-                sprites.add(image);
-                x += Constante.SPRITE_WIDTH;
-            }
-            y += Constante.SPRITE_HEIGHT*2;
-            x = 0;
-        }
+        sprites = Utils.loadSprites(filas, columnas, Constante.SPRITE_WIDTH, Constante.SPRITE_HEIGHT*2, Global.spritesPlayer);
+    }
+
+    private void resizeSprites(){
+        sprites = Utils.resizeSprites(Constante.RESCALADO_SPRITE_WIDTH, Constante.RESCALADO_SPRITE_HEIGHT*2, sprites);
     }
 
     public void update() {
