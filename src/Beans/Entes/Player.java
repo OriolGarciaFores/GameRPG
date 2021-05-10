@@ -87,10 +87,19 @@ public class Player implements Serializable {
         animationMove();
         graphics.pushMatrix();
         graphics.translate(anchor.x, anchor.y);
-        body(graphics);
-        espada.paint(graphics);//TODO REVISAR ORDEN PAINT (CARA ARRIBA ABAJO)
+        ordenCapa(graphics);
         graphics.popMatrix();
         debug(graphics, anchor);
+    }
+
+    private void ordenCapa(PGraphics graphics){
+        if(espada.isCapaInferior()){
+            espada.paint(graphics);
+            body(graphics);
+        }else{
+            body(graphics);
+            espada.paint(graphics);
+        }
     }
 
     private void debug(PGraphics graphics, PVector anchor){

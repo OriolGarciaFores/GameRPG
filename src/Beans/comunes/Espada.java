@@ -23,6 +23,7 @@ public class Espada {
     private float radioAtaque = Constante.RESCALADO_SPRITE_WIDTH;
     private int idSpriteActual = 0;
     private int direccionMovimiento;
+    private boolean capaInferior;
 
     public Espada() {
         loadSprites();
@@ -36,11 +37,13 @@ public class Espada {
         int y = 0;
         int filas = 1;
         int columnas = 4;
+        final int WIDTH_SPRITE = 24 * Constante.RESCALADO;
+        final int HEIGHT_SPRITE = 24 * Constante.RESCALADO;
 
         for (int fila = 0; fila < filas; fila++) {
             for (int col = 0; col < columnas; col++) {
                 PImage image = Global.sword.get(x, y, Constante.SPRITE_WIDTH*4, Constante.SPRITE_HEIGHT*4);
-                image.resize(Constante.RESCALADO_SPRITE_WIDTH, Constante.RESCALADO_SPRITE_HEIGHT);
+                image.resize(WIDTH_SPRITE, HEIGHT_SPRITE);
                 sprites.add(image);
                 x += Constante.SPRITE_WIDTH*4;
             }
@@ -81,9 +84,11 @@ public class Espada {
 
     public void paint(PGraphics graphics) {
         if(animacionActiva){
+            graphics.pushMatrix();
             calcularPositionAtaque(graphics);
             graphics.image(spriteActual, 8, 8);
             animacionAtaque();
+            graphics.popMatrix();
         }
     }
 
@@ -107,15 +112,21 @@ public class Espada {
 
         switch (direccionMovimiento){
             case ARRIBA:
-                //graphics.scale(-1.0f, -1.0f);
+                capaInferior = true;
+                graphics.rotate(PApplet.radians(-45f));
+                graphics.scale(1.0f, -1.0f);
                 break;
             case ABAJO:
-                graphics.scale(1.0f, 1.0f);
+                capaInferior = false;
+                graphics.rotate(PApplet.radians(90f));
+                graphics.scale(1.0f, -1.0f);
                 break;
             case IZQUIERDA:
+                capaInferior = false;
                 graphics.scale(-1.0f, 1.0f);
                 break;
             case DERECHA:
+                capaInferior = false;
                 graphics.scale(1.0f, 1.0f);
                 break;
             default:
@@ -164,5 +175,9 @@ public class Espada {
 
     public void setDireccionMovimiento(int direccionMovimiento) {
         this.direccionMovimiento = direccionMovimiento;
+    }
+
+    public boolean isCapaInferior() {
+        return capaInferior;
     }
 }
