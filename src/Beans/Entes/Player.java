@@ -23,6 +23,9 @@ public class Player implements Serializable {
     private final int IZQUIERDA = 12;
     private  final int MAX_FPS_ANIMACION = 10;
     private final int SEPARACION = Constante.RESCALADO_SPRITE_WIDTH / 3;
+    private final float MAX_SPEED_DASH = 8 * Constante.RESCALADO;
+    private final int MAX_TIME_ACTIVE_DASH = 8;
+    private final int MAX_COLDOWN_DASH = 120;
 
     private PVector posicion, speed, acc, anchor;
     private float radio;
@@ -44,6 +47,11 @@ public class Player implements Serializable {
 
     //TODO WEAPON - Equipamiento ? - multiples armas
     private Espada espada;
+
+    private boolean dashActivo;
+    private boolean dashColdawn;
+    private int timeActiveDash;
+    private int timeColdawnDash;
 
     public Player(final int x, final int y) {
         posicion = new PVector(x, y);
@@ -72,6 +80,8 @@ public class Player implements Serializable {
         direction();
         updateArma();
         move();
+        ejecutarDash();
+        coldownDash();
     }
 
     public void paint(PGraphics graphics) {
@@ -157,12 +167,43 @@ public class Player implements Serializable {
         if (this.acc.x == 0 && this.acc.y == 0) {
             speed.mult(0f);
         } else {
-            speed.limit(MAX_SPEED);
+            if(dashActivo){
+                speed.mult(MAX_SPEED_DASH);
+                speed.limit(MAX_SPEED_DASH);
+            }
+            else speed.limit(MAX_SPEED);
         }
         posicionAnterior = new PVector(posicion.x, posicion.y);
         speed.add(acc);
         posicion.add(speed);
         colisionesMapa(posicionAnterior);
+    }
+
+    //TODO - METODOS GENERICOS HABILIDAD ?
+    private void ejecutarDash(){
+        if(dashActivo)contadorDash();
+        if(Constante.KEYBOARD.space && !dashActivo && !dashColdawn){
+            dashActivo = true;
+        }
+    }
+
+    private void coldownDash(){
+        if(dashColdawn && MAX_COLDOWN_DASH > timeColdawnDash){
+            timeColdawnDash++;
+        }else{
+            dashColdawn = false;
+            timeColdawnDash = 0;
+        }
+    }
+
+    private void contadorDash(){
+        if(MAX_TIME_ACTIVE_DASH > timeActiveDash){
+            timeActiveDash++;
+        }else{
+            dashColdawn = true;
+            dashActivo = false;
+            timeActiveDash = 0;
+        }
     }
 
     //TODO POSIBLE METODO GENERICO MULTIPLES ENTIDADES ?
