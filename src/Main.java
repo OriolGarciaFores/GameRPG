@@ -4,6 +4,7 @@ import Herramientas.Global;
 import Herramientas.Utils;
 import processing.core.PApplet;
 import processing.core.PImage;
+import processing.core.PVector;
 
 import java.awt.event.KeyEvent;
 
@@ -96,8 +97,13 @@ public class Main extends PApplet {
     }
 
     private void updates() {
+        updateMouse();
         gestorEstados.changeStatus();
         gestorEstados.update(g);
+    }
+
+    private void updateMouse(){
+        Global.mouse = new PVector(mouseX, mouseY);
     }
 
     private void debugMain(){

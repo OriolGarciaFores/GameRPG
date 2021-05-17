@@ -1,6 +1,7 @@
 package Herramientas;
 
 import processing.core.PImage;
+import processing.core.PVector;
 
 public class Global {
     public static int width = 800;
@@ -12,4 +13,5 @@ public class Global {
     public static PImage spritesPlayer;
     public static PImage spriteMonster;
     public static PImage sword;
+    public static PVector mouse;
 }

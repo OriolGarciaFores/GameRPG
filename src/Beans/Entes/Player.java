@@ -134,25 +134,105 @@ public class Player implements Serializable {
 
         if (Constante.KEYBOARD.up) {
             if(!colisionArriba)direction.add(new PVector(0, -1));
-            direccionMovimiento = ARRIBA;
         }
         if (Constante.KEYBOARD.down) {
             if(!colisionAbajo)direction.add(new PVector(0, 1));
-            direccionMovimiento = ABAJO;
         }
         if (Constante.KEYBOARD.left) {
             if(!colisionIzquierda)direction.add(new PVector(-1, 0));
-            direccionMovimiento = IZQUIERDA;
         }
         if (Constante.KEYBOARD.right) {
             if(!colisionDerecha)direction.add(new PVector(1, 0));
-            direccionMovimiento = DERECHA;
         }
+
+        directionSprite();
 
         if(direction.x != 0 || direction.y != 0) isMoving = true;
         else isMoving = false;
 
         this.acc = direction;
+    }
+
+    private void directionSprite(){
+        float angleRadius = PApplet.atan2(Global.mouse.y - anchor.y, Global.mouse.x - anchor.x);
+        float angle = (180 / PApplet.PI) * angleRadius;
+        angle = (angle < 0) ? angle + 360 : angle;
+
+        orientacion(angle);
+    }
+
+    private void orientacion(float angle){
+        PVector direction = new PVector(0, 0);
+
+        if(angle >= 67.5 && angle < 112.5)
+        {
+            direction = new PVector(0,1);
+        }
+        else if (angle >= 112.5 && angle < 157.5)
+        {
+            direction = new PVector(-1,1);
+        }
+        else if (angle >= 157.5 && angle < 202.5)
+        {
+            direction = new PVector(-1, 0);
+        }
+        else if (angle >= 202.5 && angle < 247.5)
+        {
+            direction = new PVector(-1, -1);
+        }
+        else if (angle >= 247.5 && angle < 292.5)
+        {
+            direction = new PVector(0, -1);
+        }
+        else if (angle >= 292.5 && angle < 337.5)
+        {
+            direction = new PVector(1, -1);
+        }
+        else if (angle >= 337.5 || angle < 22.5)
+        {
+            direction = new PVector(1, 0);
+        }
+        else if (angle >= 22.5 && angle < 67.5)
+        {
+            direction = new PVector(1, 1);
+        }
+
+        getOrientation(direction);
+    }
+
+    private void getOrientation(PVector movement){
+        if (movement.x == 0 && movement.y == 1)
+        {
+            direccionMovimiento = ABAJO;
+        }
+        else if (movement.x == 1 && movement.y == 0)
+        {
+            direccionMovimiento = DERECHA;
+        }
+        else if (movement.x == 0 && movement.y == -1)
+        {
+            direccionMovimiento = ARRIBA;
+        }
+        else if (movement.x == -1 && movement.y == 0)
+        {
+            direccionMovimiento = IZQUIERDA;
+        }
+        else if (movement.x == -1 && movement.y == 1)
+        {
+            direccionMovimiento = ABAJO;
+        }
+        else if (movement.x == 1 && movement.y == 1)
+        {
+            direccionMovimiento = ABAJO;
+        }
+        else if (movement.x == -1 && movement.y == -1)
+        {
+            direccionMovimiento = ARRIBA;
+        }
+        else if (movement.x == 1 && movement.y == -1)
+        {
+            direccionMovimiento = ARRIBA;
+        }
     }
 
     private void updateArma(){

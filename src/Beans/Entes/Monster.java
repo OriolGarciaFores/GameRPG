@@ -54,7 +54,7 @@ public class Monster extends Ente {
         Utils.debugValue("POSICION MATRIZ OBJ X: ", PApplet.round(this.target.x / Constante.RESCALADO_SPRITE_WIDTH), (posicion.x + anchorDist.x) - 20, (posicion.y + anchorDist.y) - 30, graphics, TEXT_SIZE);
         Utils.debugValue("POSICION MATRIZ OBJ Y: ", PApplet.round(this.target.y / Constante.RESCALADO_SPRITE_HEIGHT), (posicion.x + anchorDist.x) - 20, (posicion.y + anchorDist.y) - 20, graphics, TEXT_SIZE);
         debugCamino(graphics, anchorDist);
-        //Utils.debugAreaCirculo(radio, graphics, new PVector(this.posicion.x+anchorDist.x, posicion.y+anchorDist.y));
+        Utils.debugAreaCirculo(radio, graphics, new PVector(this.posicion.x+anchorDist.x, posicion.y+anchorDist.y));
 
     }
 
