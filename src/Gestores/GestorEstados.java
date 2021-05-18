@@ -41,10 +41,13 @@ public class GestorEstados {
       //  this.ESTADOS[1] = new GestorJuego();
     }
 
+    //TODO REVISAR AL OVER
     public void changeStatus(){
         if(!Global.over){
             //this.estado = 1;
             this.estadoActual = ESTADOS[1];
+        }else{
+            this.estadoActual = ESTADOS[0];
         }
     }
 

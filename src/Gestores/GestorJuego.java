@@ -43,7 +43,7 @@ public class GestorJuego implements EstadoJuego{
     }
 
     private void updateGestorMonstruos(){
-        gm.update(player.getPosicion(), mapa.getAnchorDist());
+        gm.update(player, mapa.getAnchorDist());
     }
 
     public void paint(PGraphics graphics){

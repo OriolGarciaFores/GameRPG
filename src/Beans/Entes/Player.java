@@ -46,7 +46,7 @@ public class Player implements Serializable {
     private int[][] obstaculosColisionables;
 
     //TODO WEAPON - Equipamiento ? - multiples armas
-    private Espada espada;
+    public Espada espada;
 
     private boolean dashActivo;
     private boolean dashColdawn;
@@ -125,7 +125,7 @@ public class Player implements Serializable {
             Utils.debugValue("LADOS COLISION: ", ladoCol, 20, 190, graphics);
             Utils.debugValue("POSICION MATRIZ X: ", (this.posicion.x / Constante.RESCALADO_SPRITE_WIDTH), 20, 210, graphics);
             Utils.debugValue("POSICION MATRIZ Y: ", (this.posicion.y / Constante.RESCALADO_SPRITE_HEIGHT), 20, 230, graphics);
-            espada.debug(graphics);
+            espada.debug(graphics, anchor);
         }
     }
 
@@ -236,9 +236,8 @@ public class Player implements Serializable {
     }
 
     private void updateArma(){
-            espada.setAnchor(anchor);
             espada.setDireccionMovimiento(direccionMovimiento);
-            espada.update();
+            espada.update(this.posicion);
     }
 
     private void move() {
@@ -400,6 +399,18 @@ public class Player implements Serializable {
 
         return isCollision;
     }*/
+
+    public void reducirVida() {
+        if ((this.health - 1) <= 0) {
+            this.health = 0;
+        } else {
+            this.health -= 1;
+        }
+        if (this.health == 0) {
+            //finalScore = this.score;
+            Global.over = true;
+        }
+    }
 
     public PVector getPosicion() {
         return posicion;

@@ -19,11 +19,12 @@ public class Espada {
     private float damage;
     private PImage spriteActual;
     private ArrayList<PImage> sprites;
-    private PVector posicionAtq, anchor;
+    private PVector posicionAtq;
     private float radioAtaque = Constante.RESCALADO_SPRITE_WIDTH;
     private int idSpriteActual = 0;
     private int direccionMovimiento;
     private boolean capaInferior;
+    public boolean isUsed;
 
     public Espada() {
         loadSprites();
@@ -47,30 +48,35 @@ public class Espada {
         sprites = Utils.resizeSprites(WIDTH_SPRITE, HEIGHT_SPRITE, sprites);
     }
 
-    public void update() {
-        calcularRadioAtaque();
+    public void update(PVector posicion) {
+        calcularRadioAtaque(posicion);
     }
 
-    private void calcularRadioAtaque(){
+    private void calcularRadioAtaque(PVector posicion){
         if(!Constante.KEYBOARD.activeAtq){
-            posicionAtq = null;
+            posicionAtq = new PVector(posicion.x, posicion.y);
+            isUsed = false;
             return;
         }
-        posicionAtq = new PVector(anchor.x, anchor.y);
+        isUsed = true;
+        posicionAtq = new PVector(posicion.x, posicion.y);
         animacionActiva = true;
+        calcularDireccion(posicionAtq);
+    }
 
+    private void calcularDireccion(PVector posicion){
         switch (direccionMovimiento){
             case ARRIBA:
-                posicionAtq.add(new PVector(0, - (Constante.RESCALADO_SPRITE_HEIGHT / 2)));
+                posicion.add(new PVector(0, - (Constante.RESCALADO_SPRITE_HEIGHT / 2)));
                 break;
             case ABAJO:
-                posicionAtq.add(new PVector(0, (Constante.RESCALADO_SPRITE_HEIGHT / 2)));
+                posicion.add(new PVector(0, (Constante.RESCALADO_SPRITE_HEIGHT / 2)));
                 break;
             case IZQUIERDA:
-                posicionAtq.add(new PVector( - (Constante.RESCALADO_SPRITE_WIDTH / 2), 0));
+                posicion.add(new PVector( - (Constante.RESCALADO_SPRITE_WIDTH / 2), 0));
                 break;
             case DERECHA:
-                posicionAtq.add(new PVector((Constante.RESCALADO_SPRITE_WIDTH / 2), 0));
+                posicion.add(new PVector((Constante.RESCALADO_SPRITE_WIDTH / 2), 0));
                 break;
             default:
                 break;
@@ -88,7 +94,6 @@ public class Espada {
     }
 
     private void animacionAtaque(){
-            //Constante.KEYBOARD.activeAtq = false;
                 contadorFramesAnimationBasic++;
                 if(contadorFramesAnimationBasic >= MAX_FRAMES_ANIMATION_BASIC){
                     contadorFramesAnimationBasic = 0;
@@ -129,10 +134,16 @@ public class Espada {
         }
     }
 
-    public void debug(PGraphics graphics){
+    public void debug(PGraphics graphics, PVector anchor){
         if(Constante.MODE_DEBUG) {
-            if (posicionAtq != null)
-                Utils.debugAreaCirculo(radioAtaque, graphics, posicionAtq, Constante.ROJO.getRGB());
+            if (isUsed){
+                PVector p = new PVector(posicionAtq.x, posicionAtq.y);
+                p.add(new PVector((anchor.x - posicionAtq.x), (anchor.y - posicionAtq.y)));
+
+                calcularDireccion(p);
+
+                Utils.debugAreaCirculo(radioAtaque, graphics, p, Constante.ROJO.getRGB());
+            }
         }
     }
 
@@ -160,19 +171,15 @@ public class Espada {
         this.posicionAtq = posicionAtq;
     }
 
-    public PVector getAnchor() {
-        return anchor;
-    }
-
-    public void setAnchor(PVector anchor) {
-        this.anchor = anchor;
-    }
-
     public void setDireccionMovimiento(int direccionMovimiento) {
         this.direccionMovimiento = direccionMovimiento;
     }
 
     public boolean isCapaInferior() {
         return capaInferior;
+    }
+
+    public float getRadioAtaque() {
+        return radioAtaque;
     }
 }

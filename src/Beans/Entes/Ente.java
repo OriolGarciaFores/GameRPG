@@ -194,4 +194,16 @@ public abstract class Ente {
     public PVector getTargetPosicionRedondeada() {
         return new PVector(PApplet.round(this.target.x), PApplet.round(this.target.y));
     }
+
+    public float getRadio() {
+        return radio;
+    }
+
+    public PVector getPosicion() {
+        return posicion;
+    }
+
+    public void setDie(boolean die) {
+        isDie = die;
+    }
 }

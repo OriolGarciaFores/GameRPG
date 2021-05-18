@@ -29,7 +29,7 @@ public class GestorMapeado {
 
     private void cargarJSON() {
         String filePath = new File("").getAbsolutePath();
-        File file = new File(filePath + "/src/Resources/Json/Mapa_1.json");
+        File file = new File(filePath + "/src/Resources/Json/Mapa_test.json");
         contenidoJSON = PApplet.loadJSONObject(file);
         patronWidth = contenidoJSON.getInt("width");
         patronHeight = contenidoJSON.getInt("height");

@@ -2,6 +2,7 @@ package Gestores;
 
 import Beans.Entes.Ente;
 import Beans.Entes.Monster;
+import Beans.Entes.Player;
 import Beans.comunes.Casilla;
 import Herramientas.Constante;
 import processing.core.PApplet;
@@ -29,14 +30,14 @@ public class GestorMonstruos {
         this.columnasMapa = columnasMapa;
     }
 
-    public void update(PVector target, PVector anchorDist){
-        this.target = target;
+    public void update(Player player, PVector anchorDist){
+        this.target = player.getPosicion();
         //if(validarPosicionTarget())
        // this.target = obtenerPosicionTableroTarget(target);
         //this.posicionAnteriorTarget = this.target;
 
         this.anchorDist = anchorDist;
-        updateMobs();
+        updateMobs(player);
     }
 
     private boolean validarPosicionTarget(){
@@ -74,12 +75,29 @@ public class GestorMonstruos {
         mobs.add(monster);*/
     }
 
-    private void updateMobs(){
+    private void updateMobs(Player player){
         for(int i = 0; i < mobs.size(); i++){
-            mobs.get(i).setAnchorDist(anchorDist);
-            mobs.get(i).setTargetFinal(target);
-            mobs.get(i).update();
+            Ente ente = mobs.get(i);
+            ente.setAnchorDist(anchorDist);
+            ente.setTargetFinal(target);
+            ente.update();
+
+            if (PVector.dist(ente.getPosicion(), this.target)<=player.getRadio()/2 + ente.getRadio()/2) {
+               // player.reducirVida();//TODO Mejorar en base al daño del monstruo
+            }
+            if(player.espada.isUsed){
+                System.out.println(ente.getPosicion() + "ENTE");
+                //System.out.println(player.espada.getPosicionAtq() + "ARMA");
+                if (PVector.dist(ente.getPosicion(), player.espada.getPosicionAtq())<=player.espada.getRadioAtaque()/2 + ente.getRadio()/2) {
+                    ente.setDie(true);
+                    mobs.remove(i);
+                    System.out.println("MUERTO");
+                }
+            }
+
+
         }
+
     }
 
     private void paintMobs(PGraphics graphics){
