@@ -54,7 +54,7 @@ public class Main extends PApplet {
         gestorEstados = new GestorEstados();
         referenciaActualizacion = System.nanoTime();
         referenciaContador = System.nanoTime();
-//TEST
+
     }
 
     public void draw() {
