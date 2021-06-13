@@ -15,6 +15,7 @@ public class Constante {
     public static final int RESCALADO_SPRITE_WIDTH = Constante.SPRITE_WIDTH * Constante.RESCALADO;
     public static final int RESCALADO_SPRITE_HEIGHT = Constante.SPRITE_HEIGHT * Constante.RESCALADO;
     public static final boolean MODE_DEBUG = false;
+    public static final boolean CIERRE_ESC_DESHABILITADO = true;
     public static final Color BLANCO = new Color(0xFFFFFF);
     public static final Color ROJO = new Color(0xFF3831);
 

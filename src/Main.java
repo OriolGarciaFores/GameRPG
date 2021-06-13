@@ -68,7 +68,7 @@ public class Main extends PApplet {
 
     private void montarVentana() {
         if (isFull) {
-            changeSizeScreen();
+            changeSizeScreenFull();
             fullScreen(P2D);
         } else {
             size(Global.width, Global.height, P2D);
@@ -77,7 +77,7 @@ public class Main extends PApplet {
         noSmooth();
     }
 
-    private void changeSizeScreen() {
+    private void changeSizeScreenFull() {
         Global.width = displayWidth;
         Global.height = displayHeight;
     }
@@ -97,6 +97,7 @@ public class Main extends PApplet {
     }
 
     private void updates() {
+        updateSizeScreen();
         updateMouse();
         gestorEstados.changeStatus();
         gestorEstados.update(g);
@@ -104,6 +105,13 @@ public class Main extends PApplet {
 
     private void updateMouse(){
         Global.mouse = new PVector(mouseX, mouseY);
+    }
+
+    private void updateSizeScreen(){
+        if(Global.width != width || Global.height != height) {
+            Global.width = width;
+            Global.height = height;
+        }
     }
 
     private void debugMain(){
@@ -137,6 +145,13 @@ public class Main extends PApplet {
 
     public void keyPressed() {
         Constante.KEYBOARD.keyDown(keyCode);
+        if(Constante.CIERRE_ESC_DESHABILITADO) deshabilitarCierreEsc();
+    }
+
+    private void deshabilitarCierreEsc(){
+        if(keyCode == 27){
+            key = 0;
+        }
     }
 
     public void mousePressed(){
