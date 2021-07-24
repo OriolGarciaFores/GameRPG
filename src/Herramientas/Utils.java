@@ -224,4 +224,15 @@ public class Utils {
 
         return spriteRedimensinado;
     }
+
+    public static float calcularMinutosFrames(float minutos){
+        float segundos = 60 * minutos;
+        return calcularSegundosFrames(segundos);
+    }
+
+    public static float calcularSegundosFrames(float segundos){
+        float frames = Constante.MAX_FPS * segundos;
+
+        return frames;
+    }
 }
