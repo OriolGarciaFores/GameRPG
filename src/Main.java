@@ -92,6 +92,7 @@ public class Main extends PApplet {
         Global.spriteSheet = loadImage("Resources/Sprites/Overworld.png");
         Global.spritesPlayer = loadImage("Resources/Sprites/character.png");
         Global.spriteMonster = loadImage("Resources/Sprites/fantasmito.png");
+        Global.spriteKingSlime = loadImage("Resources/Sprites/kingslime.png");
         Global.sword = loadImage("Resources/Sprites/Espada.png");
     }
 
