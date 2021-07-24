@@ -125,24 +125,43 @@ public abstract class Ente {
     private void calPos() {
         this.speed = new PVector(0,0);
 
-        if(getPosicionRedondeada().x < getTargetPosicionRedondeada().x){
-            this.speed.add(new PVector(maxSpeed, 0));
+        if(this.posicion.x < this.target.x){
+            this.speed.add(new PVector(calcularMaxSpeedX(), 0));
         }
 
-        if(getPosicionRedondeada().x > getTargetPosicionRedondeada().x){
-            this.speed.add(new PVector(-maxSpeed, 0));
+        if(this.posicion.x > this.target.x){
+            this.speed.add(new PVector(-calcularMaxSpeedX(), 0));
         }
 
-        if(getPosicionRedondeada().y < getTargetPosicionRedondeada().y){
-            this.speed.add(new PVector(0, maxSpeed));
+        if(this.posicion.y < this.target.y){
+            this.speed.add(new PVector(0, calcularMaxSpeedY()));
         }
 
-        if(getPosicionRedondeada().y > getTargetPosicionRedondeada().y){
-            this.speed.add(new PVector(0, -maxSpeed));
+        if(this.posicion.y > this.target.y){
+            this.speed.add(new PVector(0, -calcularMaxSpeedY()));
         }
-
 
         this.posicion.add(this.speed);
+    }
+
+    private float calcularMaxSpeedX(){
+        float diferenciaX = PApplet.abs(this.posicion.x) - PApplet.abs(this.target.x);
+
+        if(maxSpeed > PApplet.abs(diferenciaX)){
+            return diferenciaX;
+        }
+
+        return maxSpeed;
+    }
+
+    private float calcularMaxSpeedY(){
+        float diferenciaY = PApplet.abs(this.posicion.y) - PApplet.abs(this.target.y);
+
+        if(maxSpeed > PApplet.abs(diferenciaY)){
+            return diferenciaY;
+        }
+
+        return maxSpeed;
     }
 
     protected void debugCamino(PGraphics graphics, PVector anchoDirs){
