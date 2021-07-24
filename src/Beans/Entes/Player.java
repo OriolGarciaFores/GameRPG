@@ -24,8 +24,8 @@ public class Player implements Serializable {
     private  final int MAX_FPS_ANIMACION = 10;
     private final int SEPARACION = Constante.RESCALADO_SPRITE_WIDTH / 3;
     private final float MAX_SPEED_DASH = 8 * Constante.RESCALADO;
-    private final int MAX_TIME_ACTIVE_DASH = 8;
-    private final int MAX_COLDOWN_DASH = 120;
+    private final float MAX_TIME_ACTIVE_DASH = 8;
+    private final float MAX_COLDOWN_DASH = Utils.calcularSegundosFrames(0.5f);
 
     private PVector posicion, speed, acc, anchor;
     private float radio;
@@ -50,8 +50,8 @@ public class Player implements Serializable {
 
     private boolean dashActivo;
     private boolean dashColdawn;
-    private int timeActiveDash;
-    private int timeColdawnDash;
+    private float timeActiveDash;
+    private float timeColdawnDash;
 
     public Player(final int x, final int y) {
         posicion = new PVector(x, y);
