@@ -1,18 +1,10 @@
 package Beans.Entes;
 
-import Gestores.GestorInteligenciaArtificial;
 import Herramientas.Constante;
 import Herramientas.Global;
-import Herramientas.Utils;
-import processing.core.PApplet;
-import processing.core.PGraphics;
 import processing.core.PVector;
 
-import java.awt.*;
-
 public class KingSlime extends Ente {
-
-    private Color color = new Color(0x274D55);
 
     public KingSlime(PVector posicion, int[][] tablero, PVector targetFinal, final int filasMapa, final int columnasMapa){
         this.id = 1;
@@ -25,39 +17,13 @@ public class KingSlime extends Ente {
         this.targetFinal = targetFinal;
         this.filasMapa = filasMapa;
         this.columnasMapa = columnasMapa;
-        Global.spriteKingSlime.resize(Constante.RESCALADO_SPRITE_WIDTH*2, Constante.RESCALADO_SPRITE_HEIGHT*2);
+        this.sprite = Global.spriteKingSlime;
+        this.sprite.resize(Constante.RESCALADO_SPRITE_WIDTH*2, Constante.RESCALADO_SPRITE_HEIGHT*2);
         initIA();
     }
 
     @Override
     protected void initIA() {
-        //this.gestorInteligenciaArtificial = new GestorInteligenciaArtificial(tablero, this.posicion, this.targetFinal, this.filasMapa, this.columnasMapa);
-    }
-
-    public void paint(PGraphics graphics){
-        graphics.noFill();
-        graphics.strokeWeight(4);
-        graphics.stroke(color.getRGB());
-        graphics.pushMatrix();
-        graphics.translate(posicion.x+anchorDist.x, posicion.y+anchorDist.y);
-        body(graphics);
-        graphics.popMatrix();
-        if(Constante.MODE_DEBUG)debug(graphics);
-    }
-
-    private void debug(PGraphics graphics) {
-        final int TEXT_SIZE = 13;
-        Utils.debugValue("POSICION MATRIZ X: ", PApplet.round(this.posicion.x / Constante.RESCALADO_SPRITE_WIDTH), (posicion.x + anchorDist.x) - 20, (posicion.y + anchorDist.y) - 50, graphics, TEXT_SIZE);
-        Utils.debugValue("POSICION MATRIZ Y: ", PApplet.round(this.posicion.y / Constante.RESCALADO_SPRITE_HEIGHT), (posicion.x + anchorDist.x) - 20, (posicion.y + anchorDist.y) - 40, graphics, TEXT_SIZE);
-        Utils.debugValue("POSICION MATRIZ OBJ X: ", PApplet.round(this.target.x / Constante.RESCALADO_SPRITE_WIDTH), (posicion.x + anchorDist.x) - 20, (posicion.y + anchorDist.y) - 30, graphics, TEXT_SIZE);
-        Utils.debugValue("POSICION MATRIZ OBJ Y: ", PApplet.round(this.target.y / Constante.RESCALADO_SPRITE_HEIGHT), (posicion.x + anchorDist.x) - 20, (posicion.y + anchorDist.y) - 20, graphics, TEXT_SIZE);
-        debugCamino(graphics, anchorDist);
-        Utils.debugAreaCirculo(radio, graphics, new PVector(this.posicion.x+anchorDist.x, posicion.y+anchorDist.y));
-
-    }
-
-    @Override
-    void body(PGraphics graphics) {
-        graphics.image(Global.spriteKingSlime, 0, 0);
+        this.activeIA = false;
     }
 }

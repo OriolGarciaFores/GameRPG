@@ -2,8 +2,10 @@ package Beans.Entes;
 
 import Gestores.GestorInteligenciaArtificial;
 import Herramientas.Constante;
+import Herramientas.Utils;
 import processing.core.PApplet;
 import processing.core.PGraphics;
+import processing.core.PImage;
 import processing.core.PVector;
 
 import java.awt.*;
@@ -32,7 +34,8 @@ public abstract class Ente {
     protected int filasMapa;
     protected int columnasMapa;
     private boolean haCambiadoTarget;
-    private boolean activeIA = true;
+    protected boolean activeIA = true;
+    protected PImage sprite;
 
     //TODO TEMPORAL
     private boolean activo = true;
@@ -40,10 +43,19 @@ public abstract class Ente {
    protected abstract void initIA();
 
     public void paint(PGraphics graphics){
-
+        graphics.noFill();
+        graphics.strokeWeight(4);
+        graphics.pushMatrix();
+        graphics.translate(posicion.x+anchorDist.x, posicion.y+anchorDist.y);
+        body(graphics);
+        graphics.popMatrix();
+        if(Constante.MODE_DEBUG)debug(graphics);
     }
 
-    abstract void body(PGraphics graphics);
+    public void body(PGraphics graphics){
+        if(sprite != null) graphics.image(sprite, 0, 0);
+        else graphics.rect(0, 0, Constante.RESCALADO_SPRITE_WIDTH, Constante.RESCALADO_SPRITE_HEIGHT);
+    }
 
     public void update(){
         if(isMovil) {
@@ -67,8 +79,6 @@ public abstract class Ente {
         this.gestorInteligenciaArtificial.init(this.posicion, this.targetFinal);
         this.gestorInteligenciaArtificial.buscarRuta();
         camino = this.gestorInteligenciaArtificial.getCamino();
-
-       // this.gestorInteligenciaArtificial.debugCargaMapaColisionesConCamino();
         if(camino.size() != 0) obtenerTarget();
     }
 
@@ -81,16 +91,11 @@ public abstract class Ente {
     private void obtenerTarget(){
         Point punto = camino.get(0);
 
-        //if(camino.size() > 1)  punto = camino.get(1);
-        //else punto = camino.get(0);
-
         camino.remove(0);
         this.target = new PVector((punto.x * Constante.RESCALADO_SPRITE_WIDTH), (punto.y * Constante.RESCALADO_SPRITE_HEIGHT));
     }
 
     private void validarCambioTarget(){
-        //System.out.println("Actual "+this.targetFinal.x);
-        //if(targetFinalAnt != null)System.out.println("ANTIGUO" + this.targetFinalAnt.x);
         if(targetFinalAnt == null || (targetFinalAnt.x != targetFinal.x || targetFinalAnt.y != targetFinal.y)){
             targetFinalAnt = new PVector(targetFinal.x, targetFinal.y);
             haCambiadoTarget = true;
@@ -113,40 +118,26 @@ public abstract class Ente {
     }
 
     private void move() {
-        //calAcc();
-        //calSpeed();
         calPos();
         this.acc = new PVector();
-    }
-
-    private void calAcc() {
-        PVector findTarget = PVector.sub(this.target, this.posicion);
-        findTarget.normalize();
-        findTarget.mult(Constante.RESCALADO);
-        this.acc.add(findTarget);
-    }
-
-    private void calSpeed() {
-        this.speed.add(this.acc);
-        this.speed.limit(this.maxSpeed);
     }
 
     private void calPos() {
         this.speed = new PVector(0,0);
 
-        if(this.posicion.x < this.target.x){
+        if(getPosicionRedondeada().x < getTargetPosicionRedondeada().x){
             this.speed.add(new PVector(maxSpeed, 0));
         }
 
-        if(this.posicion.x > this.target.x){
+        if(getPosicionRedondeada().x > getTargetPosicionRedondeada().x){
             this.speed.add(new PVector(-maxSpeed, 0));
         }
 
-        if(this.posicion.y < this.target.y){
+        if(getPosicionRedondeada().y < getTargetPosicionRedondeada().y){
             this.speed.add(new PVector(0, maxSpeed));
         }
 
-        if(this.posicion.y > this.target.y){
+        if(getPosicionRedondeada().y > getTargetPosicionRedondeada().y){
             this.speed.add(new PVector(0, -maxSpeed));
         }
 
@@ -176,10 +167,6 @@ public abstract class Ente {
         this.anchorDist = anchorDist;
     }
 
-    public void setTarget(PVector target) {
-        this.target = target;
-    }
-
     public void setTargetFinal(PVector targetFinal) {
         if(activeIA)
         this.targetFinal = targetFinal;
@@ -205,5 +192,16 @@ public abstract class Ente {
 
     public void setDie(boolean die) {
         isDie = die;
+    }
+
+    private void debug(PGraphics graphics) {
+        final int TEXT_SIZE = 13;
+        Utils.debugValue("POSICION MATRIZ X: ", PApplet.round(this.posicion.x / Constante.RESCALADO_SPRITE_WIDTH), (posicion.x + anchorDist.x) - 20, (posicion.y + anchorDist.y) - 50, graphics, TEXT_SIZE);
+        Utils.debugValue("POSICION MATRIZ Y: ", PApplet.round(this.posicion.y / Constante.RESCALADO_SPRITE_HEIGHT), (posicion.x + anchorDist.x) - 20, (posicion.y + anchorDist.y) - 40, graphics, TEXT_SIZE);
+        Utils.debugValue("POSICION MATRIZ OBJ X: ", PApplet.round(this.target.x / Constante.RESCALADO_SPRITE_WIDTH), (posicion.x + anchorDist.x) - 20, (posicion.y + anchorDist.y) - 30, graphics, TEXT_SIZE);
+        Utils.debugValue("POSICION MATRIZ OBJ Y: ", PApplet.round(this.target.y / Constante.RESCALADO_SPRITE_HEIGHT), (posicion.x + anchorDist.x) - 20, (posicion.y + anchorDist.y) - 20, graphics, TEXT_SIZE);
+        debugCamino(graphics, anchorDist);
+        Utils.debugAreaCirculo(radio, graphics, new PVector(this.posicion.x+anchorDist.x, posicion.y+anchorDist.y));
+
     }
 }
